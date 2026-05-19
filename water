@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+i=$1
+[[ $(($1)) == 0 ]] && i=100
+
+while [[ $i > 0 ]]
+do
+	clear
+	echo -e "\e[1;32m$i\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of water on the wall
+	sleep 2s
+	echo -e "\e[1;32m$i\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of water
+	sleep 2s
+	echo take one down, pass it around
+	sleep 2s
+	i=$(($i - 1))
+	echo -e "\e[1;32m$(if [[ $i == 0 ]];then echo -n no more; else echo -n $i; fi)\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of water on the wall
+	sleep 2s
+done
+
+echo -e "\n"
