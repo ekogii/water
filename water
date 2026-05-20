@@ -1,19 +1,77 @@
 #!/usr/bin/bash
 
-i=$1
-[[ $(($1)) == 0 ]] && i=100
+version="0.2.0"
+
+i=100
+bottle=water
+
+next=''
+nb_mode=''
+
+for arg in $@
+do
+	if [[ $next == "-b" ]]; then
+		next=''
+		bottle=$arg
+		continue
+	fi
+	
+	
+	if [[ $arg == "-b" ]]; then
+		next="$arg"
+	elif [[ $arg == "-v" ]]; then
+		nb_mode="$arg"
+	elif [[ $arg == "-h" ]]; then
+		nb_mode="$arg"
+	else
+		i=$(($arg))
+	fi
+done
+
+
+arg0=$0
+
+usage()
+{
+	echo -e "water version $version"
+	echo -e "usage: $arg0 [options] count"
+	echo -e "options:"
+	echo -e "  -b <name>\tspecify the contents of the bottles. default is 'water'."
+	echo -e "           \tdue to the nature of me being lazy, the name cannot contain any spaces."
+	echo -e "  -h       \tprint this message."
+	echo -e "  -v       \tprint the version of this script."
+	
+	echo -e "\ncount must be a positive integer"
+}
+
+if [[ $i < 1 ]]; then
+	usage >&2
+	exit 1
+fi
+
+if [[ $nb_mode == "-h" ]]; then
+	usage
+	exit 0
+fi
+
+if [[ $nb_mode == "-v" ]]; then
+	echo "water version $version"
+	exit 0
+fi
+
+
 
 while [[ $i > 0 ]]
 do
 	clear
-	echo -e "\e[1;32m$i\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of water on the wall
+	echo -e "\e[1;32m$i\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of $bottle on the wall
 	sleep 2s
-	echo -e "\e[1;32m$i\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of water
+	echo -e "\e[1;32m$i\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of $bottle
 	sleep 2s
 	echo take one down, pass it around
 	sleep 2s
 	i=$(($i - 1))
-	echo -e "\e[1;32m$(if [[ $i == 0 ]];then echo -n no more; else echo -n $i; fi)\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of water on the wall
+	echo -e "\e[1;32m$(if [[ $i == 0 ]];then echo -n no more; else echo -n $i; fi)\e[0;0m" bottle$(if [[ $i != 1 ]];then echo s; fi) of $bottle on the wall
 	sleep 2s
 done
 
